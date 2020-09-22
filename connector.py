@@ -50,7 +50,7 @@ class AzureBlobStorageConnector:
         locally first.
 
         Usage:
-        with connector.download_stream('path/to/file.etx') as stream:
+        with connector.download_stream('path/to/file.ext') as stream:
             df = pd.read_parquet(stream)
 
         This way the stream gets neatly created and closed afterwards.
@@ -120,6 +120,11 @@ class AzureBlobStorageConnector:
     def open(self, blob_path: str, mode: str):
         """Create a Python-like `open()` interface for downloading and uploading
         files from and to AzureBlobStorage.
+
+        Usage:
+        with connector.open('path/to/file.ext', 'r') as stream:
+            df = pd.read_parquet(stream)
+        
 
         Parameters
         ----------
