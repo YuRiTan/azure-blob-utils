@@ -2,7 +2,7 @@ from typing import BinaryIO, Optional, Generator
 from contextlib import contextmanager
 from io import BytesIO
 
-from azure.identity import InteractiveBrowserCredential, DefaultAzureCredential
+from azure.identity import DefaultAzureCredential
 from azure.storage.blob import ContainerClient, StorageStreamDownloader
 
 
