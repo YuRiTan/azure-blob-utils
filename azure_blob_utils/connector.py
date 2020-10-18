@@ -10,7 +10,7 @@ class AzureBlobStorageConnector:
     """Connector class that contains Azure's Container client, and works as an
     interface to read/write from/to files on AzureBlobStorage.
     """
-    def __init__(self, account_url: str, container_name: str, credential: Optional[any] = None):
+    def __init__(self, account_url: str, container_name: str, credential: Optional[any] = None) -> None:
         """ Setting up the `AzureBlobStorageConnector` by initializing a containerclient and credential.
 
         Parameters
@@ -87,7 +87,7 @@ class AzureBlobStorageConnector:
         logger.debug('Closing stream...')
         stream.close()
 
-    def upload_blob(self, source_path: str, blob_path: str):
+    def upload_blob(self, source_path: str, blob_path: str) -> None:
         """Uploads a local file to Azure Blob Storage
 
         Parameters
