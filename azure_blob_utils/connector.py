@@ -1,8 +1,8 @@
-from typing import BinaryIO
+from typing import BinaryIO, Optional, Generator
 from contextlib import contextmanager
 from io import BytesIO
 
-from azure.identity import InteractiveBrowserCredential
+from azure.identity import InteractiveBrowserCredential, DefaultAzureCredential
 from azure.storage.blob import ContainerClient, StorageStreamDownloader
 
 
@@ -10,10 +10,25 @@ class AzureBlobStorageConnector:
     """Connector class that contains Azure's Container client, and works as an
     interface to read/write from/to files on AzureBlobStorage.
     """
-    def __init__(self, account_url: str, container_name: str):
+    def __init__(self, account_url: str, container_name: str, credential: Optional[any] = None):
+        """ Setting up the `AzureBlobStorageConnector` by initializing a containerclient and credential.
+
+        Parameters
+        ----------
+        account_url: str
+            Account url used in the `azure.storage.blob.ContainerClient`.
+        container_name: str
+            Name of the container used in the `azure.storage.blob.ContainerClient`.
+        credential: Optional[any]
+            Credential instance of some credential class provided by the `azure.identity` package.
+        """
         self.account_url = account_url
         self.container_name = container_name
-        self.credential = InteractiveBrowserCredential()
+
+        # Will use InteractiveBrowserCredential if all others fail
+        default_credential = DefaultAzureCredential(exclude_interactive_browser_credential=False)
+        self.credential = credential or default_credential 
+
         self.container_client = ContainerClient(self.account_url,
                                                 self.container_name,
                                                 credential=self.credential)
@@ -23,7 +38,7 @@ class AzureBlobStorageConnector:
         stream_downloader = blob_client.download_blob()
         return stream_downloader
 
-    def _upload(self, obj: BinaryIO, blob_path: str, overwrite: bool):
+    def _upload(self, obj: BinaryIO, blob_path: str, overwrite: bool) -> None:
         blob_client = self.container_client.get_blob_client(blob_path)
         blob_client.upload_blob(obj, blob_type="BlockBlob", overwrite=overwrite)
 
@@ -117,7 +132,7 @@ class AzureBlobStorageConnector:
         stream.close()
 
     @contextmanager
-    def open(self, blob_path: str, mode: str):
+    def open(self, blob_path: str, mode: str) -> Generator[BytesIO, None, None]:
         """Create a Python-like `open()` interface for downloading and uploading
         files from and to AzureBlobStorage.
 
