@@ -1,12 +1,18 @@
 # azure-blob-utils
-Some functions used when working with azure blob storage
+Some commen functions used when working with azure blob storage. This package is intended to work alongside Azure's Python packages, providing some convenience functions.
+
+## Requirements
+- azure-identity
+- azure-storage-blob
+
+## Features
+- **AzureBlobStorageConnector**: A connector class that allows you to `read`, `write` (or `overwrite`) files just like you would on your local machine using the Pythonic `open()` method.
 
 ## Getting started
-
-First, reading blobs into memory / writing memory objects to blobs:
+In this example you can see how you can read/write parquet files from/to AzureBlobStorage.
 
 ```Python
-connector = AzureBlobStorageConnector('<account_url'>, '<conainer_name>')
+connector = AzureBlobStorageConnector('<account_url'>, '<conainer_name>', '<optional_credential>')
 
 # read some file (for example: Parquet) into memory
 with connector.open('path/to/blob.parquet', 'r') as stream:
