@@ -13,6 +13,7 @@ setup(
     url='https://github.com/YuRiTan/azure-blob-utils',
     description='Some Azure blob storage utils.',
     long_description=README,
+    long_description_content_type='text/markdown',
     author="Yu Ri Tan",
     license="MIT",
     classifiers=[
@@ -20,6 +21,6 @@ setup(
         "Programming Language :: Python :: 3",
     ],
     install_requires=requirements,
-    packages=find_packages(exclude=('tests')),
+    packages=find_packages(exclude=('tests',)),
 )
 
