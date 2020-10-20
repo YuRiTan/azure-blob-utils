@@ -7,6 +7,8 @@ README = (root_dir / "README.md").read_text()
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
+test_requirements = ['pytest', 'pandas']
+
 setup(
     name='azure-blob-utils',
     version='0.0.1',
@@ -22,5 +24,6 @@ setup(
     ],
     install_requires=requirements,
     packages=find_packages(exclude=('tests',)),
+    tests_require = test_requirements,
 )
 
