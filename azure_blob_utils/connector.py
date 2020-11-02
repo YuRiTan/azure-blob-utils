@@ -84,6 +84,7 @@ class AzureBlobStorageConnector:
         stream = BytesIO()
         blob_client = self.container_client.get_blob_client(blob_path)
         blob_client.download_blob().readinto(stream)
+        stream.seek(0)  # set pointer back to start of stream
         yield stream
         logger.debug('Closing stream...')
         stream.close()
